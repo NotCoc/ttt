@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="29">
+  <CheatEntries/>
+  <UserdefinedSymbols/>
+  <LuaScript>
+	dbk_initialize() 
+	dbk_useKernelmodeOpenProcess() 
+	dbk_useKernelmodeProcessMemoryAccess() 
+
+	if getOpenedProcessID() then openProcess(getOpenedProcessID()) end 
+
+	dbk_writesIgnoreWriteProtection(true)
+	  
+	  function AOBRep(search, change)
+	local aob = AOBScan(search)
+	if aob then
+	  for i=0,aob.Count-1 do
+	    autoAssemble(aob[i]..':\ndb '..change)
+	  end
+	  aob.Destroy()
+	end
+	end
+
+	EmuForm = createForm(true)
+	EmuForm.Caption = 'Select Emulator'
+	EmuForm.Width = 300
+	EmuForm.Height = 60
+
+	function gameloop()
+	emu= "aow_exe"
+	startmenu()
+	EmuForm.hide()
+	end
+
+	
+	EmuButton1 = createButton(EmuForm)
+	EmuButton1.Left = 10
+	EmuButton1.Top = 10
+	EmuButton1.Width = 280
+	EmuButton1.Height = 40
+	EmuButton1.onClick = gameloop
+	EmuButton1.Caption = 'Gameloop'
+
+
+
+	function startmenu()
+	local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r');
+	local procInfo = p:read('*a');
+	p:close();
+	local pid = procInfo:match('%d+');
+	pid = tonumber(pid);
+
+	if(pid == nil)then
+	messageDialog("You Must Start The Game First!", mtWarning, mbOK)
+	closeCE()
+	else
+	openProcess(pid)
+
+	----------------AOB Values----------------
+
+	function SuperMBullet()
+	searchV = '?? ?? ?? ?? 0A D7 A3 3E 00 00 00 00 01 00 00 00 AE 47 E1 BD 70 12 83 3A 0A D7 A3 3B 00 00 00 80'
+	replaceV = '00 00 C0 3F 0A D7 A3 3E 00 00 00 00 01 00 00 00 AE 47 E1 BD 70 12 83 3A 0A D7 A3 3B 00 00 00 80'
+	AOBRep(searchV,replaceV)
+	showMessage("Strong Magic Bullet active")
+	end
+
+	function SafeMBullet()
+	searchV = '8F C2 75 3E E1 7A 14 3F'
+	replaceV = '00 00 80 3F E1 7A 14 3F'
+	AOBRep(searchV,replaceV)
+	showMessage("Safe MBullet Active")
+	end
+
+	function LegitSpeed()
+	searchV = '?? ?? ?? 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	replaceV = '00 00 A0 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	AOBRep(searchV,replaceV)
+	showMessage("Legit Speed Active")
+	end
+
+	function SusSpeed()
+	searchV = '?? ?? ?? 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	replaceV = '00 00 B0 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	AOBRep(searchV,replaceV)
+	showMessage("SUS Speed Active")
+	end
+
+	function SuperSusSpeed()
+	searchV = '?? ?? ?? 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	replaceV = '00 00 F0 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	AOBRep(searchV,replaceV)
+	showMessage("Super SuS Speed Active")
+	end
+	
+	function DisSpeed()
+	searchV = '?? ?? ?? 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	replaceV = 'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F 00 00 00 40 00 00 B4 42 9A 99 99 3E 00 00 AE C2'
+	AOBRep(searchV,replaceV)
+	showMessage("Disabled Speed")
+	end
+
+	
+
+	MyForm = createForm(true)
+	MyForm.Caption = 'Call Of Duty Hack Baraa 2023'
+	MyForm.Width = 400
+	MyForm.Height = 280
+
+	btn1 = createButton(MyForm)
+	btn1.Left = 10
+	btn1.Top = 10
+	btn1.Width = 380
+	btn1.Height = 40
+	btn1.onClick = SuperMBullet
+	btn1.Caption = 'Magic Bullet Safe / Body!'
+
+	btn2 = createButton(MyForm)
+	btn2.Left = 10
+	btn2.Top = 50
+	btn2.Width = 380
+	btn2.Height = 40
+	btn2.onClick = SafeMBullet
+	btn2.Caption = 'No recoil'
+
+	btn3 = createButton(MyForm)
+	btn3.Left = 10
+	btn3.Top = 90
+	btn3.Width = 380
+	btn3.Height = 40
+	btn3.onClick = LegitSpeed
+	btn3.Caption = 'Legit Speed Hack'
+
+	btn4 = createButton(MyForm)
+	btn4.Left = 10
+	btn4.Top = 130
+	btn4.Width = 380
+	btn4.Height = 40
+	btn4.onClick = SusSpeed
+	btn4.Caption = 'No spread'
+
+	btn5 = createButton(MyForm)
+	btn5.Left = 10
+	btn5.Top = 170
+	btn5.Width = 380
+	btn5.Height = 40
+	btn5.onClick = SuperSusSpeed
+	btn5.Caption = 'Wallhack'
+
+	
+	---/
+	info1l = createLabel(MyForm)
+	info1l.Caption= 'Active Hack in Game'
+	info1l.Left = 130
+	info1l.Top = 210
+
+	info2l = createLabel(MyForm)
+	info2l.Caption= 'Hack By Baraa'
+	info2l.Left = 140
+	info2l.Top = 230
+
+	info3l = createLabel(MyForm)
+	info3l.Caption= 'This hack is 100% Safe! Enjoy :D'
+	info3l.Left = 110
+	info3l.Top = 250
+
+	end
+	end
+</LuaScript>
+</CheatTable>
